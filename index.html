@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ReciclArte • Módulo de Orçamento (Protótipo)</title>
+  <style>
+    :root {
+      --bg:#0f172a; /* slate-900 */
+      --panel:#111827; /* gray-900 */
+      --muted:#334155; /* slate-700 */
+      --soft:#1f2937; /* gray-800 */
+      --ink:#e5e7eb; /* gray-200 */
+      --accent:#22c55e; /* green-500 */
+      --warn:#f59e0b; /* amber-500 */
+      --danger:#ef4444; /* red-500 */
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: linear-gradient(120deg, #0b1224, #0f172a 40%, #0b1224);
+      color: var(--ink); font: 15px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell;
+    }
+    header {
+      padding: 20px; display: flex; gap: 16px; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 5; background: rgba(15,23,42,.9); backdrop-filter: blur(6px);
+      border-bottom: 1px solid #111827;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo { width: 36px; height: 36px; border-radius: 10px; background: radial-gradient(circle at 30% 30%, #22c55e, #16a34a 60%, #064e3b);
+      box-shadow: 0 0 0 2px #064e3b inset, 0 6px 18px rgba(34,197,94,.3); }
+    h1 { margin: 0; font-size: 18px; letter-spacing: .3px; font-weight: 650; }
+    .grid { display: grid; gap: 16px; padding: 16px; grid-template-columns: 1.6fr 1fr; }
+    .panel { background: var(--panel); border: 1px solid #1f2937; border-radius: 14px; overflow: hidden; }
+    .panel > .head { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: var(--soft); border-bottom: 1px solid #1f2937; }
+    .panel h2 { margin: 0; font-size: 14px; font-weight: 620; letter-spacing: .2px; }
+    .panel .body { padding: 12px; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; }
+    label { font-size: 12px; color: #cbd5e1; }
+    input, select { width: 100%; padding: 8px 10px; background: #0b1220; border: 1px solid #243042; color: var(--ink); border-radius: 10px; outline: none; }
+    input:focus { border-color: #37527a; box-shadow: 0 0 0 3px rgba(59,130,246,.15); }
+    .col { flex: 1 1 180px; min-width: 180px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 10px; border: 1px solid #1f2937; background: #0b1220; color: var(--ink); cursor: pointer; }
+    .btn:hover { background: #0e1726; }
+    .btn.primary { background: #14532d; border-color: #14532d; }
+    .btn.primary:hover { background: #166534; }
+    .btn.warn { background: #7c2d12; border-color: #7c2d12; }
+    .btn.ghost { background: transparent; }
+    .muted { color: #94a3b8; font-size: 12px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px dashed #263244; font-size: 13px; }
+    thead th { position: sticky; top: 0; background: var(--panel); z-index: 1; }
+    tbody tr:hover { background: #0b1220; }
+    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .kpi { background: #0b1220; border: 1px solid #1f2937; border-radius: 14px; padding: 12px; }
+    .kpi .label { font-size: 12px; color: #94a3b8; }
+    .kpi .value { font-size: 20px; font-weight: 700; margin-top: 6px; }
+    .kpi .tag { font-size: 11px; margin-top: 6px; color: #cbd5e1; }
+    .tag.ok { color: var(--accent); }
+    .tag.warn { color: var(--warn); }
+    .tag.bad { color: var(--danger); }
+    .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .foot { padding: 10px 14px; background: var(--soft); border-top: 1px solid #1f2937; display: flex; gap: 8px; flex-wrap: wrap; }
+    .pill { background: #0b1220; border: 1px solid #1f2937; border-radius: 999px; padding: 6px 10px; font-size: 12px; }
+    canvas { width: 100%; height: 220px; display: block; background: #0b1220; border: 1px solid #1f2937; border-radius: 12px; }
+    .notice { font-size: 12px; color: #a3e635; }
+    @media (max-width: 1080px){ .grid { grid-template-columns: 1fr; } .cards { grid-template-columns: 1fr; } .kpis { grid-template-columns: repeat(2, 1fr);} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <h1>ReciclArte • Módulo de Orçamento</h1>
+    </div>
+    <div class="row" style="flex-wrap:nowrap;gap:8px">
+      <button class="btn" id="btnSave">Salvar</button>
+      <button class="btn ghost" id="btnLoad">Restaurar</button>
+      <button class="btn warn" id="btnReset">Limpar</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="panel">
+      <div class="head"><h2>Estrutura de Orçamento</h2>
+        <div class="row" style="gap:8px">
+          <button class="btn primary" id="addReceita">+ Receita</button>
+          <button class="btn" id="addFixos">+ Custo Fixo</button>
+          <button class="btn" id="addVariavel">+ Custo Variável</button>
+          <button class="btn" id="btnCSV">Importar CSV</button>
+          <input type="file" id="csvFile" accept=".csv" hidden>
+        </div>
+      </div>
+      <div class="body">
+        <div class="muted">Preços e quantidades mensais. Unidade padrão em toneladas.</div>
+        <table id="tbl">
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Categoria</th>
+              <th>Descrição</th>
+              <th>Preço/Unid (R$)</th>
+              <th>Qtd</th>
+              <th>Custo Unit (R$)</th>
+              <th>Valor (R$)</th>
+              <th>Fonte de dados</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div class="foot">
+        <span class="pill" id="sumReceitas">Receitas: R$ 0,00</span>
+        <span class="pill" id="sumFixos">Fixos: R$ 0,00</span>
+        <span class="pill" id="sumVariaveis">Variáveis: R$ 0,00</span>
+        <span class="pill" id="sumMargem">Margem: R$ 0,00</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="head"><h2>Cenários</h2>
+        <button class="btn" id="btnAplicaCenario">Aplicar</button>
+      </div>
+      <div class="body">
+        <div class="row">
+          <div class="col">
+            <label>Variação de preço de venda (%)</label>
+            <input type="number" id="scPreco" step="0.1" value="0">
+          </div>
+          <div class="col">
+            <label>Variação de volume (%)</label>
+            <input type="number" id="scVolume" step="0.1" value="0">
+          </div>
+          <div class="col">
+            <label>Variação custo variável (%)</label>
+            <input type="number" id="scCustoVar" step="0.1" value="0">
+          </div>
+          <div class="col">
+            <label>Variação custo fixo (%)</label>
+            <input type="number" id="scCustoFixo" step="0.1" value="0">
+          </div>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <div class="col">
+            <label>Preço médio por tonelada (apenas display)</label>
+            <input type="text" id="precoMedio" readonly>
+          </div>
+          <div class="col">
+            <label>Custo variável médio por tonelada</label>
+            <input type="text" id="cvMedio" readonly>
+          </div>
+          <div class="col">
+            <label>Ponto de equilíbrio (ton/mês)</label>
+            <input type="text" id="peq" readonly>
+          </div>
+        </div>
+        <div class="cards" style="margin-top:12px">
+          <div class="kpi">
+            <div class="label">Margem Operacional</div>
+            <div class="value" id="kpiMargem">R$ 0,00</div>
+            <div class="tag" id="kpiMargemTag"></div>
+          </div>
+          <div class="kpi">
+            <div class="label">Custo por Tonelada</div>
+            <div class="value" id="kpiCustoTon">R$ 0,00</div>
+            <div class="tag" id="kpiCustoTonTag"></div>
+          </div>
+          <div class="kpi">
+            <div class="label">Variação Orçamentária</div>
+            <div class="value" id="kpiVar">0,0%</div>
+            <div class="tag" id="kpiVarTag"></div>
+          </div>
+          <div class="kpi">
+            <div class="label">Geração de Caixa Estimada</div>
+            <div class="value" id="kpiCaixa">R$ 0,00</div>
+            <div class="tag" id="kpiCaixaTag"></div>
+          </div>
+        </div>
+        <div style="margin-top:12px">
+          <canvas id="chart"></canvas>
+        </div>
+      </div>
+      <div class="foot">
+        <span class="notice">Projeção mensal. Alterações salvas no navegador.</span>
+      </div>
+    </section>
+
+    <section class="panel" style="grid-column:1/-1">
+      <div class="head"><h2>Catálogo de Medidas, Métricas, KPIs e Fontes</h2>
+        <button class="btn" id="btnExport">Exportar JSON</button>
+      </div>
+      <div class="body">
+        <table>
+          <thead>
+            <tr>
+              <th>Medida</th>
+              <th>Métrica</th>
+              <th>KPI</th>
+              <th>Definição</th>
+              <th>Fonte de dados</th>
+              <th>Periodicidade</th>
+            </tr>
+          </thead>
+          <tbody id="catalogo"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ------------ Modelo de dados ------------
+    const LS_KEY = 'reciclarte_mod_orcamento_v1';
+    let linhas = [];
+
+    const tipoMap = { receita: 'Receita', fixo: 'Custo Fixo', variavel: 'Custo Variável' };
+
+    function moeda(n){
+      if(!isFinite(n)) return 'R$ 0,00';
+      return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+    }
+
+    function pct(n){
+      if(!isFinite(n)) return '0,0%';
+      return (n*100).toFixed(1).replace('.',',')+'%';
+    }
+
+    function rowBlank(t){
+      return { id: crypto.randomUUID(), tipo: t, categoria:'', desc:'', preco:0, qtd:0, cunit:0, fonte:'' };
+    }
+
+    function seed(){
+      linhas = [
+        {id:crypto.randomUUID(), tipo:'receita', categoria:'PET', desc:'Venda PET', preco:1800, qtd:20, cunit:0, fonte:'Notas de venda'},
+        {id:crypto.randomUUID(), tipo:'receita', categoria:'Papelão', desc:'Venda papelão', preco:950, qtd:30, cunit:0, fonte:'Notas de venda'},
+        {id:crypto.randomUUID(), tipo:'variavel', categoria:'Transporte', desc:'Frete', preco:0, qtd:50, cunit:80, fonte:'Planilha logística'},
+        {id:crypto.randomUUID(), tipo:'variavel', categoria:'Energia', desc:'Energia triagem', preco:0, qtd:50, cunit:35, fonte:'Faturas'},
+        {id:crypto.randomUUID(), tipo:'fixo', categoria:'Pessoal', desc:'Administração', preco:0, qtd:1, cunit:12000, fonte:'Folha'},
+        {id:crypto.randomUUID(), tipo:'fixo', categoria:'Manutenção', desc:'Equipamentos', preco:0, qtd:1, cunit:3000, fonte:'Registros internos'}
+      ];
+    }
+
+    function save(){ localStorage.setItem(LS_KEY, JSON.stringify(linhas)); }
+    function load(){ const raw = localStorage.getItem(LS_KEY); if(raw){ linhas = JSON.parse(raw); } else { seed(); save(); }}
+
+    // ------------ Renderização ------------
+    const tbody = document.getElementById('tbody');
+
+    function render(){
+      tbody.innerHTML = '';
+      let rec=0, fix=0, vari=0, volumeTon=0, custoVarTotal=0;
+
+      for(const r of linhas){
+        const valor = r.tipo==='receita' ? (r.preco*r.qtd) : (r.cunit*r.qtd);
+        if(r.tipo==='receita'){ rec+=valor; volumeTon += Number(r.qtd)||0; }
+        if(r.tipo==='fixo'){ fix+=valor; }
+        if(r.tipo==='variavel'){ vari+=valor; custoVarTotal += valor; volumeTon += Number(r.qtd)||0; }
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <select data-id="${r.id}" data-k="tipo">
+              <option value="receita" ${r.tipo==='receita'?'selected':''}>Receita</option>
+              <option value="fixo" ${r.tipo==='fixo'?'selected':''}>Custo Fixo</option>
+              <option value="variavel" ${r.tipo==='variavel'?'selected':''}>Custo Variável</option>
+            </select>
+          </td>
+          <td><input data-id="${r.id}" data-k="categoria" value="${r.categoria}"></td>
+          <td><input data-id="${r.id}" data-k="desc" value="${r.desc}"></td>
+          <td><input type="number" step="0.01" data-id="${r.id}" data-k="preco" value="${r.preco}"></td>
+          <td><input type="number" step="0.01" data-id="${r.id}" data-k="qtd" value="${r.qtd}"></td>
+          <td><input type="number" step="0.01" data-id="${r.id}" data-k="cunit" value="${r.cunit}"></td>
+          <td>${moeda(valor)}</td>
+          <td><input data-id="${r.id}" data-k="fonte" value="${r.fonte}"></td>
+          <td><button class="btn" data-del="${r.id}">Excluir</button></td>
+        `;
+        tbody.appendChild(tr);
+      }
+
+      document.getElementById('sumReceitas').textContent = `Receitas: ${moeda(rec)}`;
+      document.getElementById('sumFixos').textContent = `Fixos: ${moeda(fix)}`;
+      document.getElementById('sumVariaveis').textContent = `Variáveis: ${moeda(vari)}`;
+      const margem = rec - fix - vari;
+      document.getElementById('sumMargem').textContent = `Margem: ${moeda(margem)}`;
+
+      // KPIs
+      const precoMedio = volumeTon>0 ? rec/volumeTon : 0;
+      const cvMedio = volumeTon>0 ? custoVarTotal/volumeTon : 0;
+      const cmv = vari + fix; // simplificado para display
+      const custoPorTon = volumeTon>0 ? cmv/volumeTon : 0;
+      const peTon = (precoMedio-cvMedio)>0 ? (fix/(precoMedio-cvMedio)) : 0;
+
+      document.getElementById('precoMedio').value = moeda(precoMedio);
+      document.getElementById('cvMedio').value = moeda(cvMedio);
+      document.getElementById('peq').value = isFinite(peTon)? peTon.toFixed(1).replace('.',',') : '—';
+
+      setKpi('kpiMargem', 'kpiMargemTag', margem, margem>=0 ? 'ok':'bad');
+      setKpi('kpiCustoTon', 'kpiCustoTonTag', custoPorTon, custoPorTon>0? 'ok':'warn');
+      const varPct = rec>0 ? (margem/rec) : 0;
+      setKpiPct('kpiVar','kpiVarTag', varPct, varPct>=0.1? 'ok' : varPct>=0 ? 'warn' : 'bad');
+      setKpi('kpiCaixa','kpiCaixaTag', margem, margem>=0 ? 'ok':'bad');
+
+      drawChart(rec, fix+vari);
+    }
+
+    function setKpi(idValue, idTag, val, tag){
+      document.getElementById(idValue).textContent = moeda(val);
+      const t = document.getElementById(idTag);
+      t.className = 'tag '+tag;
+      t.textContent = tag==='ok' ? 'em meta' : (tag==='warn' ? 'atenção' : 'fora da meta');
+    }
+
+    function setKpiPct(idValue, idTag, val, tag){
+      document.getElementById(idValue).textContent = pct(val);
+      const t = document.getElementById(idTag);
+      t.className = 'tag '+tag;
+      t.textContent = tag==='ok' ? 'em meta' : (tag==='warn' ? 'atenção' : 'fora da meta');
+    }
+
+    // ------------ Eventos ------------
+    document.getElementById('addReceita').onclick = ()=>{ linhas.push(rowBlank('receita')); save(); render(); };
+    document.getElementById('addFixos').onclick = ()=>{ linhas.push(rowBlank('fixo')); save(); render(); };
+    document.getElementById('addVariavel').onclick = ()=>{ linhas.push(rowBlank('variavel')); save(); render(); };
+
+    tbody.addEventListener('input', (e)=>{
+      const id = e.target.getAttribute('data-id');
+      const k = e.target.getAttribute('data-k');
+      if(!id||!k) return;
+      const row = linhas.find(x=>x.id===id);
+      let v = e.target.value;
+      if(['preco','qtd','cunit'].includes(k)) v = Number(v);
+      row[k] = v;
+      save();
+      render();
+    });
+
+    tbody.addEventListener('click', (e)=>{
+      const id = e.target.getAttribute('data-del');
+      if(!id) return;
+      linhas = linhas.filter(x=>x.id!==id);
+      save();
+      render();
+    });
+
+    // CSV import simples: colunas esperadas: tipo,categoria,desc,preco,qtd,cunit,fonte
+    document.getElementById('btnCSV').onclick = ()=> document.getElementById('csvFile').click();
+    document.getElementById('csvFile').addEventListener('change', (e)=>{
+      const f = e.target.files[0]; if(!f) return;
+      const reader = new FileReader();
+      reader.onload = ()=>{
+        const lines = reader.result.split(/\r?\n/).filter(Boolean);
+        for(let i=1;i<lines.length;i++){
+          const [tipo,categoria,desc,preco,qtd,cunit,fonte] = lines[i].split(',');
+          if(!tipo) continue;
+          linhas.push({id:crypto.randomUUID(), tipo:tipo.trim(), categoria:categoria||'', desc:desc||'', preco:Number(preco)||0, qtd:Number(qtd)||0, cunit:Number(cunit)||0, fonte:fonte||''});
+        }
+        save();
+        render();
+      };
+      reader.readAsText(f, 'utf-8');
+      e.target.value = '';
+    });
+
+    // Cenários: aplica variações
+    document.getElementById('btnAplicaCenario').onclick = ()=>{
+      const dpreco = Number(document.getElementById('scPreco').value||0)/100;
+      const dvol = Number(document.getElementById('scVolume').value||0)/100;
+      const dcv = Number(document.getElementById('scCustoVar').value||0)/100;
+      const dfix = Number(document.getElementById('scCustoFixo').value||0)/100;
+      linhas = linhas.map(r=>{
+        const n = {...r};
+        if(n.tipo==='receita'){
+          n.preco = +(n.preco * (1+dpreco)).toFixed(2);
+          n.qtd = +(n.qtd * (1+dvol)).toFixed(2);
+        }
+        if(n.tipo==='variavel'){
+          n.cunit = +(n.cunit * (1+dcv)).toFixed(2);
+          n.qtd = +(n.qtd * (1+dvol)).toFixed(2);
+        }
+        if(n.tipo==='fixo'){
+          n.cunit = +(n.cunit * (1+dfix)).toFixed(2);
+        }
+        return n;
+      });
+      save();
+      render();
+    };
+
+    // Exporta catálogo
+    document.getElementById('btnExport').onclick = ()=>{
+      const cat = buildCatalog();
+      const blob = new Blob([JSON.stringify(cat, null, 2)], {type:'application/json'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'catalogo_orcamento.json';
+      document.body.appendChild(a); a.click(); a.remove();
+    };
+
+    // Salvar/restaurar/limpar
+    document.getElementById('btnSave').onclick = ()=>{ save(); blink('Dados salvos'); };
+    document.getElementById('btnLoad').onclick = ()=>{ load(); render(); blink('Dados restaurados'); };
+    document.getElementById('btnReset').onclick = ()=>{ if(confirm('Limpar dados e restaurar exemplo?')){ localStorage.removeItem(LS_KEY); load(); render(); }};
+
+    function blink(msg){ console.log(msg); }
+
+    // ------------ Catálogo de Medidas/Métricas/KPIs ------------
+    const catalogoEl = document.getElementById('catalogo');
+    function buildCatalog(){
+      return [
+        { medida:'Receita mensal', metrica:'Somatório preço*qtd (receita)', kpi:'Margem operacional', definicao:'Receita - custos variáveis - custos fixos', fonte:'Notas de venda; contratos; planilhas', periodicidade:'Mensal' },
+        { medida:'Custo variável', metrica:'Somatório cunit*qtd (variável)', kpi:'Custo por tonelada', definicao:'(Fixos + Variáveis) / volume total', fonte:'Faturas; registros internos', periodicidade:'Mensal' },
+        { medida:'Custo fixo', metrica:'Somatório cunit*qtd (fixo)', kpi:'Ponto de equilíbrio', definicao:'Fixos / (Preço médio - Custo variável médio)', fonte:'Folha; contratos', periodicidade:'Mensal' },
+        { medida:'Volume (t)', metrica:'Quantidade agregada', kpi:'Variação orçamentária', definicao:'(Real - Orçado) / Orçado', fonte:'Planilhas; sistema interno', periodicidade:'Mensal' },
+        { medida:'Caixa', metrica:'Margem após custos', kpi:'Geração de caixa', definicao:'Margem operacional estimada', fonte:'Registros internos', periodicidade:'Mensal' }
+      ];
+    }
+
+    function renderCatalog(){
+      const cat = buildCatalog();
+      catalogoEl.innerHTML = '';
+      for(const c of cat){
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${c.medida}</td><td>${c.metrica}</td><td>${c.kpi}</td><td>${c.definicao}</td><td>${c.fonte}</td><td>${c.periodicidade}</td>`;
+        catalogoEl.appendChild(tr);
+      }
+    }
+
+    // ------------ Gráfico simples ------------
+    const ctx = document.getElementById('chart');
+    function drawChart(receita, custo){
+      const w = ctx.width = ctx.clientWidth * devicePixelRatio;
+      const h = ctx.height = ctx.clientHeight * devicePixelRatio;
+      const g = ctx.getContext('2d');
+      g.clearRect(0,0,w,h);
+      const pad = 28*devicePixelRatio;
+      const vals = [receita, custo, Math.max(receita-custo, 0)];
+      const max = Math.max(1, ...vals)*1.1;
+      const bw = (w - pad*2)/vals.length * .6;
+      const gap = (w - pad*2)/vals.length * .4;
+      const labels = ['Receita','Custo','Margem'];
+
+      // eixo
+      g.strokeStyle = '#263244'; g.lineWidth = 2; g.beginPath(); g.moveTo(pad, h-pad); g.lineTo(w-pad, h-pad); g.stroke();
+
+      // barras
+      const colors = ['#22c55e','#ef4444','#3b82f6'];
+      for(let i=0;i<vals.length;i++){
+        const x = pad + i*(bw+gap) + gap/2;
+        const y = h - pad;
+        const bh = (vals[i]/max) * (h - pad*2);
+        g.fillStyle = colors[i];
+        g.fillRect(x, y-bh, bw, bh);
+        g.fillStyle = '#cbd5e1'; g.font = `${12*devicePixelRatio}px system-ui`;
+        g.fillText(labels[i], x, y + 16*devicePixelRatio);
+        g.fillText(moeda(vals[i]).replace('R$','R$ '), x, y - bh - 8*devicePixelRatio);
+      }
+    }
+
+    // ------------ Boot ------------
+    load();
+    render();
+    renderCatalog();
+  </script>
+</body>
+</html>
