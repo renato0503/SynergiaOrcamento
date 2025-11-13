@@ -6,65 +6,204 @@
   <title>ReciclArte • Módulo de Orçamento (Protótipo)</title>
   <style>
     :root {
-      --bg:#0f172a; /* slate-900 */
-      --panel:#111827; /* gray-900 */
-      --muted:#334155; /* slate-700 */
-      --soft:#1f2937; /* gray-800 */
-      --ink:#e5e7eb; /* gray-200 */
-      --accent:#22c55e; /* green-500 */
-      --warn:#f59e0b; /* amber-500 */
-      --danger:#ef4444; /* red-500 */
+      --bg:#0f172a;
+      --panel:#111827;
+      --muted:#334155;
+      --soft:#1f2937;
+      --ink:#e5e7eb;
+      --accent:#22c55e;
+      --warn:#f59e0b;
+      --danger:#ef4444;
     }
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
-      margin: 0; background: linear-gradient(120deg, #0b1224, #0f172a 40%, #0b1224);
-      color: var(--ink); font: 15px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell;
+      margin: 0;
+      background: linear-gradient(120deg, #0b1224, #0f172a 40%, #0b1224);
+      color: var(--ink);
+      font: 15px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell;
     }
     header {
-      padding: 20px; display: flex; gap: 16px; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 5; background: rgba(15,23,42,.9); backdrop-filter: blur(6px);
+      padding: 12px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(15,23,42,.9);
+      backdrop-filter: blur(6px);
       border-bottom: 1px solid #111827;
+      flex-wrap: wrap;
     }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .logo { width: 36px; height: 36px; border-radius: 10px; background: radial-gradient(circle at 30% 30%, #22c55e, #16a34a 60%, #064e3b);
-      box-shadow: 0 0 0 2px #064e3b inset, 0 6px 18px rgba(34,197,94,.3); }
-    h1 { margin: 0; font-size: 18px; letter-spacing: .3px; font-weight: 650; }
-    .grid { display: grid; gap: 16px; padding: 16px; grid-template-columns: 1.6fr 1fr; }
-    .panel { background: var(--panel); border: 1px solid #1f2937; border-radius: 14px; overflow: hidden; }
-    .panel > .head { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: var(--soft); border-bottom: 1px solid #1f2937; }
-    .panel h2 { margin: 0; font-size: 14px; font-weight: 620; letter-spacing: .2px; }
-    .panel .body { padding: 12px; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 30% 30%, #22c55e, #16a34a 60%, #064e3b);
+      box-shadow: 0 0 0 2px #064e3b inset, 0 6px 18px rgba(34,197,94,.3);
+      flex-shrink: 0;
+    }
+    h1 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: .3px;
+      font-weight: 650;
+    }
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+    .grid {
+      display: grid;
+      gap: 16px;
+      padding: 12px;
+      grid-template-columns: 1.5fr 1fr;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid #1f2937;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .panel > .head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: var(--soft);
+      border-bottom: 1px solid #1f2937;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .panel h2 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 620;
+      letter-spacing: .2px;
+    }
+    .panel .body {
+      padding: 10px 12px 12px;
+    }
     .row { display: flex; gap: 10px; flex-wrap: wrap; }
-    label { font-size: 12px; color: #cbd5e1; }
-    input, select { width: 100%; padding: 8px 10px; background: #0b1220; border: 1px solid #243042; color: var(--ink); border-radius: 10px; outline: none; }
-    input:focus { border-color: #37527a; box-shadow: 0 0 0 3px rgba(59,130,246,.15); }
-    .col { flex: 1 1 180px; min-width: 180px; }
-    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 10px; border: 1px solid #1f2937; background: #0b1220; color: var(--ink); cursor: pointer; }
+    label { font-size: 12px; color: #cbd5e1; display: block; margin-bottom: 4px; }
+    input, select {
+      width: 100%;
+      padding: 8px 10px;
+      background: #0b1220;
+      border: 1px solid #243042;
+      color: var(--ink);
+      border-radius: 10px;
+      outline: none;
+      font-size: 13px;
+    }
+    input:focus, select:focus {
+      border-color: #37527a;
+      box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+    }
+    .col { flex: 1 1 160px; min-width: 140px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 11px;
+      border-radius: 10px;
+      border: 1px solid #1f2937;
+      background: #0b1220;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap;
+    }
     .btn:hover { background: #0e1726; }
     .btn.primary { background: #14532d; border-color: #14532d; }
     .btn.primary:hover { background: #166534; }
     .btn.warn { background: #7c2d12; border-color: #7c2d12; }
     .btn.ghost { background: transparent; }
-    .muted { color: #94a3b8; font-size: 12px; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px dashed #263244; font-size: 13px; }
+    .muted { color: #94a3b8; font-size: 12px; margin-bottom: 6px; }
+    .table-wrap { width: 100%; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td {
+      text-align: left;
+      padding: 7px 8px;
+      border-bottom: 1px dashed #263244;
+      font-size: 12px;
+    }
     thead th { position: sticky; top: 0; background: var(--panel); z-index: 1; }
     tbody tr:hover { background: #0b1220; }
-    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-    .kpi { background: #0b1220; border: 1px solid #1f2937; border-radius: 14px; padding: 12px; }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .kpi {
+      background: #0b1220;
+      border: 1px solid #1f2937;
+      border-radius: 14px;
+      padding: 10px;
+    }
     .kpi .label { font-size: 12px; color: #94a3b8; }
-    .kpi .value { font-size: 20px; font-weight: 700; margin-top: 6px; }
-    .kpi .tag { font-size: 11px; margin-top: 6px; color: #cbd5e1; }
+    .kpi .value { font-size: 18px; font-weight: 700; margin-top: 4px; }
+    .kpi .tag { font-size: 11px; margin-top: 4px; color: #cbd5e1; }
     .tag.ok { color: var(--accent); }
     .tag.warn { color: var(--warn); }
     .tag.bad { color: var(--danger); }
-    .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .foot { padding: 10px 14px; background: var(--soft); border-top: 1px solid #1f2937; display: flex; gap: 8px; flex-wrap: wrap; }
-    .pill { background: #0b1220; border: 1px solid #1f2937; border-radius: 999px; padding: 6px 10px; font-size: 12px; }
-    canvas { width: 100%; height: 220px; display: block; background: #0b1220; border: 1px solid #1f2937; border-radius: 12px; }
+    .foot {
+      padding: 8px 12px 10px;
+      background: var(--soft);
+      border-top: 1px solid #1f2937;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      background: #0b1220;
+      border: 1px solid #1f2937;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    canvas {
+      width: 100%;
+      height: 220px;
+      display: block;
+      background: #0b1220;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
     .notice { font-size: 12px; color: #a3e635; }
-    @media (max-width: 1080px){ .grid { grid-template-columns: 1fr; } .cards { grid-template-columns: 1fr; } .kpis { grid-template-columns: repeat(2, 1fr);} }
+    .blink {
+      animation: blink .4s ease-out;
+    }
+    @keyframes blink {
+      from { transform: scale(1.02); box-shadow: 0 0 0 0 rgba(34,197,94,.4); }
+      to { transform: scale(1); box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+    }
+    @media (max-width: 960px){
+      .grid { grid-template-columns: 1fr; padding: 10px; }
+      header { padding: 10px; }
+      h1 { font-size: 15px; }
+      .panel .body { padding: 10px; }
+      table { min-width: 640px; }
+    }
+    @media (max-width: 640px){
+      body { font-size: 14px; }
+      .grid { padding: 8px; gap: 12px; }
+      .panel { border-radius: 10px; }
+      .kpis { grid-template-columns: 1fr; }
+      header { flex-direction: column; align-items: flex-start; }
+      .header-actions { width: 100%; justify-content: flex-start; }
+      h1 { font-size: 14px; }
+      .logo { width: 28px; height: 28px; }
+    }
   </style>
 </head>
 <body>
@@ -73,7 +212,7 @@
       <div class="logo" aria-hidden="true"></div>
       <h1>ReciclArte • Módulo de Orçamento</h1>
     </div>
-    <div class="row" style="flex-wrap:nowrap;gap:8px">
+    <div class="header-actions">
       <button class="btn" id="btnSave">Salvar</button>
       <button class="btn ghost" id="btnLoad">Restaurar</button>
       <button class="btn warn" id="btnReset">Limpar</button>
@@ -82,8 +221,9 @@
 
   <main class="grid">
     <section class="panel">
-      <div class="head"><h2>Estrutura de Orçamento</h2>
-        <div class="row" style="gap:8px">
+      <div class="head">
+        <h2>Estrutura de Orçamento</h2>
+        <div class="row" style="gap:6px">
           <button class="btn primary" id="addReceita">+ Receita</button>
           <button class="btn" id="addFixos">+ Custo Fixo</button>
           <button class="btn" id="addVariavel">+ Custo Variável</button>
@@ -92,23 +232,25 @@
         </div>
       </div>
       <div class="body">
-        <div class="muted">Preços e quantidades mensais. Unidade padrão em toneladas.</div>
-        <table id="tbl">
-          <thead>
-            <tr>
-              <th>Tipo</th>
-              <th>Categoria</th>
-              <th>Descrição</th>
-              <th>Preço/Unid (R$)</th>
-              <th>Qtd</th>
-              <th>Custo Unit (R$)</th>
-              <th>Valor (R$)</th>
-              <th>Fonte de dados</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="tbody"></tbody>
-        </table>
+        <div class="muted">Preços e quantidades mensais com unidade padrão em toneladas.</div>
+        <div class="table-wrap">
+          <table id="tbl">
+            <thead>
+              <tr>
+                <th>Tipo</th>
+                <th>Categoria</th>
+                <th>Descrição</th>
+                <th>Preço/Unid (R$)</th>
+                <th>Qtd</th>
+                <th>Custo Unit (R$)</th>
+                <th>Valor (R$)</th>
+                <th>Fonte de dados</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
       </div>
       <div class="foot">
         <span class="pill" id="sumReceitas">Receitas: R$ 0,00</span>
@@ -119,31 +261,28 @@
     </section>
 
     <section class="panel">
-      <div class="head"><h2>Cenários</h2>
-        <button class="btn" id="btnAplicaCenario">Aplicar</button>
+      <div class="head">
+        <h2>Orçado x Realizado</h2>
+        <button class="btn" id="btnAplicaCenario">Recalcular com orçamento atual</button>
       </div>
       <div class="body">
         <div class="row">
           <div class="col">
-            <label>Variação de preço de venda (%)</label>
-            <input type="number" id="scPreco" step="0.1" value="0">
+            <label>Resultado orçado acumulado</label>
+            <input type="text" id="resultadoOrcado" readonly>
           </div>
           <div class="col">
-            <label>Variação de volume (%)</label>
-            <input type="number" id="scVolume" step="0.1" value="0">
+            <label>Resultado realizado acumulado</label>
+            <input type="text" id="resultadoRealizado" readonly>
           </div>
           <div class="col">
-            <label>Variação custo variável (%)</label>
-            <input type="number" id="scCustoVar" step="0.1" value="0">
-          </div>
-          <div class="col">
-            <label>Variação custo fixo (%)</label>
-            <input type="number" id="scCustoFixo" step="0.1" value="0">
+            <label>Diferença (realizado - orçado)</label>
+            <input type="text" id="resultadoDiferenca" readonly>
           </div>
         </div>
-        <div class="row" style="margin-top:10px">
+        <div class="row" style="margin-top:8px">
           <div class="col">
-            <label>Preço médio por tonelada (apenas display)</label>
+            <label>Preço médio por tonelada</label>
             <input type="text" id="precoMedio" readonly>
           </div>
           <div class="col">
@@ -155,65 +294,65 @@
             <input type="text" id="peq" readonly>
           </div>
         </div>
-        <div class="cards" style="margin-top:12px">
+        <div class="kpis">
           <div class="kpi">
-            <div class="label">Margem Operacional</div>
+            <div class="label">Margem orçada do mês base</div>
             <div class="value" id="kpiMargem">R$ 0,00</div>
             <div class="tag" id="kpiMargemTag"></div>
           </div>
           <div class="kpi">
-            <div class="label">Custo por Tonelada</div>
+            <div class="label">Custo por tonelada orçado</div>
             <div class="value" id="kpiCustoTon">R$ 0,00</div>
             <div class="tag" id="kpiCustoTonTag"></div>
           </div>
           <div class="kpi">
-            <div class="label">Variação Orçamentária</div>
+            <div class="label">Variação orçamentária acumulada</div>
             <div class="value" id="kpiVar">0,0%</div>
             <div class="tag" id="kpiVarTag"></div>
           </div>
           <div class="kpi">
-            <div class="label">Geração de Caixa Estimada</div>
+            <div class="label">Resultado realizado do mês base</div>
             <div class="value" id="kpiCaixa">R$ 0,00</div>
             <div class="tag" id="kpiCaixaTag"></div>
           </div>
         </div>
-        <div style="margin-top:12px">
-          <canvas id="chart"></canvas>
-        </div>
+        <canvas id="chart"></canvas>
       </div>
       <div class="foot">
-        <span class="notice">Projeção mensal. Alterações salvas no navegador.</span>
+        <span class="notice">Série mensal de orçado x realizado gerada com dados fictícios com base no orçamento atual.</span>
       </div>
     </section>
 
     <section class="panel" style="grid-column:1/-1">
-      <div class="head"><h2>Catálogo de Medidas, Métricas, KPIs e Fontes</h2>
+      <div class="head">
+        <h2>Catálogo de Medidas, Métricas, KPIs e Fontes</h2>
         <button class="btn" id="btnExport">Exportar JSON</button>
       </div>
       <div class="body">
-        <table>
-          <thead>
-            <tr>
-              <th>Medida</th>
-              <th>Métrica</th>
-              <th>KPI</th>
-              <th>Definição</th>
-              <th>Fonte de dados</th>
-              <th>Periodicidade</th>
-            </tr>
-          </thead>
-          <tbody id="catalogo"></tbody>
-        </table>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Medida</th>
+                <th>Métrica</th>
+                <th>KPI</th>
+                <th>Definição</th>
+                <th>Fonte de dados</th>
+                <th>Periodicidade</th>
+              </tr>
+            </thead>
+            <tbody id="catalogo"></tbody>
+          </table>
+        </div>
       </div>
     </section>
   </main>
 
   <script>
-    // ------------ Modelo de dados ------------
-    const LS_KEY = 'reciclarte_mod_orcamento_v1';
+    const LS_KEY = 'reciclarte_mod_orcamento_v3';
     let linhas = [];
 
-    const tipoMap = { receita: 'Receita', fixo: 'Custo Fixo', variavel: 'Custo Variável' };
+    const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 
     function moeda(n){
       if(!isFinite(n)) return 'R$ 0,00';
@@ -231,30 +370,84 @@
 
     function seed(){
       linhas = [
-        {id:crypto.randomUUID(), tipo:'receita', categoria:'PET', desc:'Venda PET', preco:1800, qtd:20, cunit:0, fonte:'Notas de venda'},
-        {id:crypto.randomUUID(), tipo:'receita', categoria:'Papelão', desc:'Venda papelão', preco:950, qtd:30, cunit:0, fonte:'Notas de venda'},
-        {id:crypto.randomUUID(), tipo:'variavel', categoria:'Transporte', desc:'Frete', preco:0, qtd:50, cunit:80, fonte:'Planilha logística'},
-        {id:crypto.randomUUID(), tipo:'variavel', categoria:'Energia', desc:'Energia triagem', preco:0, qtd:50, cunit:35, fonte:'Faturas'},
-        {id:crypto.randomUUID(), tipo:'fixo', categoria:'Pessoal', desc:'Administração', preco:0, qtd:1, cunit:12000, fonte:'Folha'},
-        {id:crypto.randomUUID(), tipo:'fixo', categoria:'Manutenção', desc:'Equipamentos', preco:0, qtd:1, cunit:3000, fonte:'Registros internos'}
+        {id:crypto.randomUUID(), tipo:'receita', categoria:'PET',      desc:'Venda PET',       preco:1800, qtd:20, cunit:0,    fonte:'Notas de venda'},
+        {id:crypto.randomUUID(), tipo:'receita', categoria:'Papelão',  desc:'Venda papelão',   preco:950,  qtd:30, cunit:0,    fonte:'Notas de venda'},
+        {id:crypto.randomUUID(), tipo:'variavel', categoria:'Transporte', desc:'Frete',        preco:0,    qtd:50, cunit:80,   fonte:'Planilha logística'},
+        {id:crypto.randomUUID(), tipo:'variavel', categoria:'Energia', desc:'Energia triagem', preco:0,    qtd:50, cunit:35,   fonte:'Faturas'},
+        {id:crypto.randomUUID(), tipo:'fixo',     categoria:'Pessoal', desc:'Administração',   preco:0,    qtd:1,  cunit:12000, fonte:'Folha'},
+        {id:crypto.randomUUID(), tipo:'fixo',     categoria:'Manutenção', desc:'Equipamentos', preco:0,    qtd:1,  cunit:3000,  fonte:'Registros internos'}
       ];
     }
 
-    function save(){ localStorage.setItem(LS_KEY, JSON.stringify(linhas)); }
-    function load(){ const raw = localStorage.getItem(LS_KEY); if(raw){ linhas = JSON.parse(raw); } else { seed(); save(); }}
+    function save(){
+      localStorage.setItem(LS_KEY, JSON.stringify(linhas));
+      blinkHeader();
+    }
 
-    // ------------ Renderização ------------
+    function load(){
+      const raw = localStorage.getItem(LS_KEY);
+      if(raw){
+        try{
+          const data = JSON.parse(raw);
+          if(Array.isArray(data)){
+            linhas = data;
+          } else if(Array.isArray(data.linhas)) {
+            linhas = data.linhas;
+          } else {
+            linhas = [];
+          }
+        } catch(e){
+          linhas = [];
+        }
+        if(!linhas.length) seed();
+      } else {
+        seed();
+        save();
+      }
+    }
+
+    function calculaTotais(){
+      let rec=0, fix=0, vari=0, volumeTon=0, custoVarTotal=0;
+      for(const r of linhas){
+        const valor = r.tipo==='receita' ? (r.preco*r.qtd) : (r.cunit*r.qtd);
+        if(r.tipo==='receita'){
+          rec += valor;
+          volumeTon += Number(r.qtd)||0;
+        }
+        if(r.tipo==='fixo'){
+          fix += valor;
+        }
+        if(r.tipo==='variavel'){
+          vari += valor;
+          custoVarTotal += valor;
+          volumeTon += Number(r.qtd)||0;
+        }
+      }
+      return { rec, fix, vari, volumeTon, custoVarTotal };
+    }
+
+    function serieOrcadoRealizado(margemBase){
+      const orcado = [];
+      const realizado = [];
+      for(let i=0;i<MESES.length;i++){
+        const fatorOrcado = 0.92 + i * 0.015;
+        const fatorReal = fatorOrcado * (1 + (i%4 - 1) * 0.02);
+        const valOrcado = margemBase * fatorOrcado;
+        const valReal = margemBase * fatorReal;
+        orcado.push(valOrcado);
+        realizado.push(valReal);
+      }
+      return { meses: MESES, orcado, realizado };
+    }
+
     const tbody = document.getElementById('tbody');
 
     function render(){
       tbody.innerHTML = '';
-      let rec=0, fix=0, vari=0, volumeTon=0, custoVarTotal=0;
+      const { rec, fix, vari, volumeTon, custoVarTotal } = calculaTotais();
 
       for(const r of linhas){
         const valor = r.tipo==='receita' ? (r.preco*r.qtd) : (r.cunit*r.qtd);
-        if(r.tipo==='receita'){ rec+=valor; volumeTon += Number(r.qtd)||0; }
-        if(r.tipo==='fixo'){ fix+=valor; }
-        if(r.tipo==='variavel'){ vari+=valor; custoVarTotal += valor; volumeTon += Number(r.qtd)||0; }
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>
@@ -282,10 +475,9 @@
       const margem = rec - fix - vari;
       document.getElementById('sumMargem').textContent = `Margem: ${moeda(margem)}`;
 
-      // KPIs
       const precoMedio = volumeTon>0 ? rec/volumeTon : 0;
       const cvMedio = volumeTon>0 ? custoVarTotal/volumeTon : 0;
-      const cmv = vari + fix; // simplificado para display
+      const cmv = vari + fix;
       const custoPorTon = volumeTon>0 ? cmv/volumeTon : 0;
       const peTon = (precoMedio-cvMedio)>0 ? (fix/(precoMedio-cvMedio)) : 0;
 
@@ -293,30 +485,46 @@
       document.getElementById('cvMedio').value = moeda(cvMedio);
       document.getElementById('peq').value = isFinite(peTon)? peTon.toFixed(1).replace('.',',') : '—';
 
+      const serie = serieOrcadoRealizado(margem || 1);
+
+      const totalOrcado = serie.orcado.reduce((a,b)=>a+b,0);
+      const totalRealizado = serie.realizado.reduce((a,b)=>a+b,0);
+      const dif = totalRealizado - totalOrcado;
+
+      document.getElementById('resultadoOrcado').value = moeda(totalOrcado);
+      document.getElementById('resultadoRealizado').value = moeda(totalRealizado);
+      document.getElementById('resultadoDiferenca').value = moeda(dif);
+
       setKpi('kpiMargem', 'kpiMargemTag', margem, margem>=0 ? 'ok':'bad');
       setKpi('kpiCustoTon', 'kpiCustoTonTag', custoPorTon, custoPorTon>0? 'ok':'warn');
-      const varPct = rec>0 ? (margem/rec) : 0;
-      setKpiPct('kpiVar','kpiVarTag', varPct, varPct>=0.1? 'ok' : varPct>=0 ? 'warn' : 'bad');
-      setKpi('kpiCaixa','kpiCaixaTag', margem, margem>=0 ? 'ok':'bad');
 
-      drawChart(rec, fix+vari);
+      const varPct = totalOrcado>0 ? ((totalRealizado - totalOrcado)/totalOrcado) : 0;
+      setKpiPct('kpiVar','kpiVarTag', varPct, varPct>0 ? 'ok' : (varPct===0 ? 'warn' : 'bad'));
+
+      const margemMesBaseOrcado = serie.orcado[0] || 0;
+      const margemMesBaseReal = serie.realizado[0] || 0;
+      document.getElementById('kpiMargem').textContent = moeda(margemMesBaseOrcado);
+      document.getElementById('kpiCaixa').textContent = moeda(margemMesBaseReal);
+      document.getElementById('kpiCaixaTag').className = 'tag '+(margemMesBaseReal>=margemMesBaseOrcado?'ok':'bad');
+      document.getElementById('kpiCaixaTag').textContent = margemMesBaseReal>=margemMesBaseOrcado ? 'acima da margem orçada' : 'abaixo da margem orçada';
+
+      drawChart(serie);
     }
 
     function setKpi(idValue, idTag, val, tag){
       document.getElementById(idValue).textContent = moeda(val);
       const t = document.getElementById(idTag);
       t.className = 'tag '+tag;
-      t.textContent = tag==='ok' ? 'em meta' : (tag==='warn' ? 'atenção' : 'fora da meta');
+      t.textContent = tag==='ok' ? 'acima do ponto de equilíbrio' : (tag==='warn' ? 'próximo do ponto de equilíbrio' : 'abaixo do ponto de equilíbrio');
     }
 
     function setKpiPct(idValue, idTag, val, tag){
       document.getElementById(idValue).textContent = pct(val);
       const t = document.getElementById(idTag);
       t.className = 'tag '+tag;
-      t.textContent = tag==='ok' ? 'em meta' : (tag==='warn' ? 'atenção' : 'fora da meta');
+      t.textContent = tag==='ok' ? 'resultado melhor que o orçado' : (tag==='warn' ? 'resultado em linha com o orçado' : 'resultado pior que o orçado');
     }
 
-    // ------------ Eventos ------------
     document.getElementById('addReceita').onclick = ()=>{ linhas.push(rowBlank('receita')); save(); render(); };
     document.getElementById('addFixos').onclick = ()=>{ linhas.push(rowBlank('fixo')); save(); render(); };
     document.getElementById('addVariavel').onclick = ()=>{ linhas.push(rowBlank('variavel')); save(); render(); };
@@ -326,6 +534,7 @@
       const k = e.target.getAttribute('data-k');
       if(!id||!k) return;
       const row = linhas.find(x=>x.id===id);
+      if(!row) return;
       let v = e.target.value;
       if(['preco','qtd','cunit'].includes(k)) v = Number(v);
       row[k] = v;
@@ -341,7 +550,6 @@
       render();
     });
 
-    // CSV import simples: colunas esperadas: tipo,categoria,desc,preco,qtd,cunit,fonte
     document.getElementById('btnCSV').onclick = ()=> document.getElementById('csvFile').click();
     document.getElementById('csvFile').addEventListener('change', (e)=>{
       const f = e.target.files[0]; if(!f) return;
@@ -351,7 +559,16 @@
         for(let i=1;i<lines.length;i++){
           const [tipo,categoria,desc,preco,qtd,cunit,fonte] = lines[i].split(',');
           if(!tipo) continue;
-          linhas.push({id:crypto.randomUUID(), tipo:tipo.trim(), categoria:categoria||'', desc:desc||'', preco:Number(preco)||0, qtd:Number(qtd)||0, cunit:Number(cunit)||0, fonte:fonte||''});
+          linhas.push({
+            id:crypto.randomUUID(),
+            tipo:tipo.trim(),
+            categoria:categoria||'',
+            desc:desc||'',
+            preco:Number(preco)||0,
+            qtd:Number(qtd)||0,
+            cunit:Number(cunit)||0,
+            fonte:fonte||''
+          });
         }
         save();
         render();
@@ -360,57 +577,47 @@
       e.target.value = '';
     });
 
-    // Cenários: aplica variações
     document.getElementById('btnAplicaCenario').onclick = ()=>{
-      const dpreco = Number(document.getElementById('scPreco').value||0)/100;
-      const dvol = Number(document.getElementById('scVolume').value||0)/100;
-      const dcv = Number(document.getElementById('scCustoVar').value||0)/100;
-      const dfix = Number(document.getElementById('scCustoFixo').value||0)/100;
-      linhas = linhas.map(r=>{
-        const n = {...r};
-        if(n.tipo==='receita'){
-          n.preco = +(n.preco * (1+dpreco)).toFixed(2);
-          n.qtd = +(n.qtd * (1+dvol)).toFixed(2);
-        }
-        if(n.tipo==='variavel'){
-          n.cunit = +(n.cunit * (1+dcv)).toFixed(2);
-          n.qtd = +(n.qtd * (1+dvol)).toFixed(2);
-        }
-        if(n.tipo==='fixo'){
-          n.cunit = +(n.cunit * (1+dfix)).toFixed(2);
-        }
-        return n;
-      });
-      save();
       render();
     };
 
-    // Exporta catálogo
     document.getElementById('btnExport').onclick = ()=>{
       const cat = buildCatalog();
       const blob = new Blob([JSON.stringify(cat, null, 2)], {type:'application/json'});
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = 'catalogo_orcamento.json';
-      document.body.appendChild(a); a.click(); a.remove();
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     };
 
-    // Salvar/restaurar/limpar
-    document.getElementById('btnSave').onclick = ()=>{ save(); blink('Dados salvos'); };
-    document.getElementById('btnLoad').onclick = ()=>{ load(); render(); blink('Dados restaurados'); };
-    document.getElementById('btnReset').onclick = ()=>{ if(confirm('Limpar dados e restaurar exemplo?')){ localStorage.removeItem(LS_KEY); load(); render(); }};
+    document.getElementById('btnSave').onclick = ()=>{ save(); render(); };
+    document.getElementById('btnLoad').onclick = ()=>{ load(); render(); };
+    document.getElementById('btnReset').onclick = ()=>{
+      if(confirm('Limpar dados e restaurar exemplo?')){
+        localStorage.removeItem(LS_KEY);
+        load();
+        render();
+      }
+    };
 
-    function blink(msg){ console.log(msg); }
+    function blinkHeader(){
+      const h = document.querySelector('header');
+      if(!h) return;
+      h.classList.remove('blink');
+      void h.offsetWidth;
+      h.classList.add('blink');
+    }
 
-    // ------------ Catálogo de Medidas/Métricas/KPIs ------------
     const catalogoEl = document.getElementById('catalogo');
     function buildCatalog(){
       return [
-        { medida:'Receita mensal', metrica:'Somatório preço*qtd (receita)', kpi:'Margem operacional', definicao:'Receita - custos variáveis - custos fixos', fonte:'Notas de venda; contratos; planilhas', periodicidade:'Mensal' },
-        { medida:'Custo variável', metrica:'Somatório cunit*qtd (variável)', kpi:'Custo por tonelada', definicao:'(Fixos + Variáveis) / volume total', fonte:'Faturas; registros internos', periodicidade:'Mensal' },
-        { medida:'Custo fixo', metrica:'Somatório cunit*qtd (fixo)', kpi:'Ponto de equilíbrio', definicao:'Fixos / (Preço médio - Custo variável médio)', fonte:'Folha; contratos', periodicidade:'Mensal' },
-        { medida:'Volume (t)', metrica:'Quantidade agregada', kpi:'Variação orçamentária', definicao:'(Real - Orçado) / Orçado', fonte:'Planilhas; sistema interno', periodicidade:'Mensal' },
-        { medida:'Caixa', metrica:'Margem após custos', kpi:'Geração de caixa', definicao:'Margem operacional estimada', fonte:'Registros internos', periodicidade:'Mensal' }
+        { medida:'Receita mensal', metrica:'Somatório preço*qtd (receita)', kpi:'Margem operacional', definicao:'Receita menos custos variáveis menos custos fixos', fonte:'Notas de venda; contratos; planilhas', periodicidade:'Mensal' },
+        { medida:'Custo variável', metrica:'Somatório cunit*qtd (variável)', kpi:'Custo por tonelada', definicao:'Soma de fixos e variáveis dividida pelo volume total', fonte:'Faturas; registros internos', periodicidade:'Mensal' },
+        { medida:'Custo fixo', metrica:'Somatório cunit*qtd (fixo)', kpi:'Ponto de equilíbrio', definicao:'Fixos divididos pela diferença entre preço médio e custo variável médio', fonte:'Folha; contratos', periodicidade:'Mensal' },
+        { medida:'Volume (t)', metrica:'Quantidade agregada', kpi:'Variação orçamentária', definicao:'Diferença entre realizado e orçado dividida pelo orçado', fonte:'Planilhas; sistema interno', periodicidade:'Mensal' },
+        { medida:'Caixa', metrica:'Margem após custos', kpi:'Geração de caixa', definicao:'Margem operacional estimada como proxy de caixa', fonte:'Registros internos', periodicidade:'Mensal' }
       ];
     }
 
@@ -424,41 +631,154 @@
       }
     }
 
-    // ------------ Gráfico simples ------------
     const ctx = document.getElementById('chart');
-    function drawChart(receita, custo){
-      const w = ctx.width = ctx.clientWidth * devicePixelRatio;
-      const h = ctx.height = ctx.clientHeight * devicePixelRatio;
+    function drawChart(serie){
+      if(!ctx) return;
+      const pixelRatio = window.devicePixelRatio || 1;
+      const displayWidth = ctx.clientWidth || 300;
+      const displayHeight = ctx.clientHeight || 200;
+      ctx.width = displayWidth * pixelRatio;
+      ctx.height = displayHeight * pixelRatio;
       const g = ctx.getContext('2d');
-      g.clearRect(0,0,w,h);
-      const pad = 28*devicePixelRatio;
-      const vals = [receita, custo, Math.max(receita-custo, 0)];
-      const max = Math.max(1, ...vals)*1.1;
-      const bw = (w - pad*2)/vals.length * .6;
-      const gap = (w - pad*2)/vals.length * .4;
-      const labels = ['Receita','Custo','Margem'];
+      g.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      g.clearRect(0,0,displayWidth,displayHeight);
 
-      // eixo
-      g.strokeStyle = '#263244'; g.lineWidth = 2; g.beginPath(); g.moveTo(pad, h-pad); g.lineTo(w-pad, h-pad); g.stroke();
+      const padLeft = 40;
+      const padRight = 16;
+      const padTop = 20;
+      const padBottom = 28;
 
-      // barras
-      const colors = ['#22c55e','#ef4444','#3b82f6'];
-      for(let i=0;i<vals.length;i++){
-        const x = pad + i*(bw+gap) + gap/2;
-        const y = h - pad;
-        const bh = (vals[i]/max) * (h - pad*2);
-        g.fillStyle = colors[i];
-        g.fillRect(x, y-bh, bw, bh);
-        g.fillStyle = '#cbd5e1'; g.font = `${12*devicePixelRatio}px system-ui`;
-        g.fillText(labels[i], x, y + 16*devicePixelRatio);
-        g.fillText(moeda(vals[i]).replace('R$','R$ '), x, y - bh - 8*devicePixelRatio);
+      const orc = serie.orcado;
+      const real = serie.realizado;
+      const meses = serie.meses;
+
+      const maxVal = Math.max(
+        1,
+        ...orc.map(v=>Math.abs(v)),
+        ...real.map(v=>Math.abs(v))
+      );
+
+      const chartHeight = displayHeight - padTop - padBottom;
+      const chartWidth = displayWidth - padLeft - padRight;
+
+      const gY = g;
+      gY.strokeStyle = '#263244';
+      gY.lineWidth = 1;
+      gY.beginPath();
+      gY.moveTo(padLeft, padTop);
+      gY.lineTo(padLeft, displayHeight-padBottom);
+      gY.lineTo(displayWidth-padRight, displayHeight-padBottom);
+      gY.stroke();
+
+      gY.fillStyle = '#64748b';
+      gY.font = '11px system-ui';
+      for(let i=0;i<=4;i++){
+        const val = (maxVal * i/4);
+        const y = displayHeight - padBottom - (chartHeight * i/4);
+        gY.beginPath();
+        gY.moveTo(padLeft, y);
+        gY.lineTo(displayWidth-padRight, y);
+        gY.strokeStyle = 'rgba(148,163,184,0.15)';
+        gY.stroke();
+        gY.fillText(moeda(val).replace('R$','R$ '), 4, y+3);
       }
+
+      const n = meses.length;
+      const stepX = n>1 ? chartWidth / (n-1) : chartWidth;
+
+      function valueToY(v){
+        const ratio = v / maxVal;
+        return displayHeight - padBottom - chartHeight * ratio;
+      }
+
+      g.lineWidth = 2;
+
+      g.beginPath();
+      for(let i=0;i<n;i++){
+        const x = padLeft + stepX * i;
+        const y = valueToY(orc[i]);
+        if(i===0) g.moveTo(x,y); else g.lineTo(x,y);
+      }
+      g.strokeStyle = '#22c55e';
+      g.stroke();
+
+      for(let i=0;i<n;i++){
+        const x = padLeft + stepX * i;
+        const y = valueToY(orc[i]);
+        g.beginPath();
+        g.arc(x,y,3,0,Math.PI*2);
+        g.fillStyle = '#22c55e';
+        g.fill();
+      }
+
+      g.beginPath();
+      for(let i=0;i<n;i++){
+        const x = padLeft + stepX * i;
+        const y = valueToY(real[i]);
+        if(i===0) g.moveTo(x,y); else g.lineTo(x,y);
+      }
+      g.strokeStyle = '#3b82f6';
+      g.stroke();
+
+      for(let i=0;i<n;i++){
+        const x = padLeft + stepX * i;
+        const y = valueToY(real[i]);
+        g.beginPath();
+        g.arc(x,y,3,0,Math.PI*2);
+        g.fillStyle = '#3b82f6';
+        g.fill();
+      }
+
+      g.fillStyle = '#cbd5e1';
+      g.font = '11px system-ui';
+      for(let i=0;i<n;i++){
+        const x = padLeft + stepX * i;
+        const y = displayHeight - padBottom + 14;
+        g.fillText(meses[i], x-14, y);
+      }
+
+      const legendX = displayWidth - padRight - 130;
+      const legendY = padTop + 4;
+      g.fillStyle = '#0b1220';
+      g.strokeStyle = '#1f2937';
+      g.lineWidth = 1;
+      if(!CanvasRenderingContext2D.prototype.roundRect){
+        CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+          if (w < 2 * r) r = w / 2;
+          if (h < 2 * r) r = h / 2;
+          this.beginPath();
+          this.moveTo(x+r, y);
+          this.arcTo(x+w, y,   x+w, y+h, r);
+          this.arcTo(x+w, y+h, x,   y+h, r);
+          this.arcTo(x,   y+h, x,   y,   r);
+          this.arcTo(x,   y,   x+w, y,   r);
+          this.closePath();
+          return this;
+        }
+      }
+      g.beginPath();
+      g.roundRect(legendX, legendY-10, 120, 34, 6);
+      g.fill();
+      g.stroke();
+
+      g.fillStyle = '#22c55e';
+      g.fillRect(legendX+8, legendY-4, 10, 3);
+      g.fillStyle = '#cbd5e1';
+      g.fillText('Orçado', legendX+24, legendY);
+
+      g.fillStyle = '#3b82f6';
+      g.fillRect(legendX+8, legendY+10, 10, 3);
+      g.fillStyle = '#cbd5e1';
+      g.fillText('Realizado', legendX+24, legendY+14);
     }
 
-    // ------------ Boot ------------
     load();
     render();
     renderCatalog();
+
+    window.addEventListener('resize', ()=>{
+      render();
+    });
   </script>
 </body>
 </html>
